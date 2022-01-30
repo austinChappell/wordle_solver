@@ -15,18 +15,19 @@ export interface LetterGuess {
 }
 
 interface Props {
+  colorBlindMode: boolean;
   letters: LetterGuess[];
   onClickLetter?: (index: number, result: Result) => () => void;
   onClickResult?: Result;
 }
 
 // Local Variables
-const getBackgroundColor = (result: Result) => {
+const getBackgroundColor = (result: Result, colorBlindMode: boolean) => {
   switch (result) {
     case Result.Correct:
-      return '#038A0E';
+      return colorBlindMode ? '#DB7500' : '#038A0E';
     case Result.Exists:
-      return '#CCA80A';
+      return colorBlindMode ? '#37B3F0' : '#CCA80A';
     case Result.Wrong:
       return '#222222';
   }
@@ -35,9 +36,15 @@ const Grid = styled.div({
   display: 'flex',
 });
 const size = window.innerWidth < 500 ? 32 : 40;
-const LetterContainer = styled.button<{ result: Result }>(({ result }) => ({
+const LetterContainer = styled.button<{
+  colorBlindMode: boolean;
+  result: Result;
+}>(({
+  colorBlindMode,
+  result
+}) => ({
   alignItems: 'center',
-  backgroundColor: getBackgroundColor(result),
+  backgroundColor: getBackgroundColor(result, colorBlindMode),
   color: '#FFFFFF',
   display: 'flex',
   justifyContent: 'center',
@@ -50,6 +57,7 @@ const LetterContainer = styled.button<{ result: Result }>(({ result }) => ({
 
 // Component Definition
 const LetterGrid: FC<Props> = ({
+  colorBlindMode,
   letters,
   onClickLetter,
   onClickResult,
@@ -58,6 +66,7 @@ const LetterGrid: FC<Props> = ({
     <Grid>
       {letters.map((l, index) => (
         <LetterContainer
+          colorBlindMode={colorBlindMode}
           disabled={!onClickLetter}
           key={index}
           onClick={onClickLetter?.(index, onClickResult ?? Result.Correct)}

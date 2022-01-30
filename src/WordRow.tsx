@@ -23,6 +23,7 @@ import { numOfLetters } from './constants';
 // Local Typings
 type Step = 'word' | 'yellowLetters' | 'greenLetters';
 interface Props {
+  colorBlindMode: boolean;
   onSetGuess: (guess: LetterGuess[]) => void;
   showEditButton: boolean;
 }
@@ -36,19 +37,20 @@ const Container = styled.div({
   alignItems: 'center',
   display: 'flex',
 });
-const getTitle = (step: Step) => {
+const getTitle = (step: Step, colorBlindMode: boolean) => {
   switch (step) {
     case 'word':
       return 'Enter Your Guess';
     case 'yellowLetters':
-      return 'Select the Yellow Letters';
+      return `Select the ${colorBlindMode ? 'Blue' : 'Yellow'} Letters`;
     case 'greenLetters':
-      return 'Select the Green Letters';
+      return `Select the ${colorBlindMode ? 'Orange' : 'Green'} Letters`;
   }
 }
 
 // Component Definition
 const WordRow: FC<Props> = ({
+  colorBlindMode,
   onSetGuess,
   showEditButton,
 }) => {
@@ -103,7 +105,10 @@ const WordRow: FC<Props> = ({
   return (
     <>
       <Container>
-        <LetterGrid letters={letters} />
+        <LetterGrid
+          colorBlindMode={colorBlindMode}
+          letters={letters}
+        />
 
         {showEditButton && (
           <Box marginLeft={2}>
@@ -125,7 +130,7 @@ const WordRow: FC<Props> = ({
         open={isDialogOpen}
       >
         <DialogTitle>
-          {getTitle(step)}
+          {getTitle(step, colorBlindMode)}
         </DialogTitle>
 
         {step === 'word' && (
@@ -155,6 +160,7 @@ const WordRow: FC<Props> = ({
           <>
             <DialogContent>
               <LetterGrid
+                colorBlindMode={colorBlindMode}
                 letters={letters}
                 onClickLetter={handleClickLetter}
                 onClickResult={Result.Exists}
@@ -186,6 +192,7 @@ const WordRow: FC<Props> = ({
           <>
             <DialogContent>
               <LetterGrid
+                colorBlindMode={colorBlindMode}
                 letters={letters}
                 onClickLetter={handleClickLetter}
                 onClickResult={Result.Correct}

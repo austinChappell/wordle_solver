@@ -8,11 +8,13 @@ import {
 import {
   Box,
   Container,
+  FormControlLabel,
   Link,
   List,
   ListItem,
   ListItemText,
   Paper,
+  Switch,
   Typography
 } from '@mui/material';
 
@@ -22,6 +24,7 @@ import { LetterGuess, Result } from './LetterGrid';
 import { maxPossibilitiesToShow, numOfGuesses, numOfLetters } from './constants';
 
 function App() {
+  const [colorBlindMode, setColorBlindMode] = useState(false);
   const [words, setWords] = useState<string[] | null>(null);
   const [attemptedGuesses, setAttemptedGuesses] = useState<LetterGuess[][]>([]);
 
@@ -85,12 +88,28 @@ function App() {
   return (
     <Box marginY={4}>
       <Container>
-        <Typography
-          component="h1"
-          variant="h4"
+        <Box
+          display="flex"
+          justifyContent="space-between"
         >
-          Wordle Solver
-        </Typography>
+          <Typography
+            component="h1"
+            variant="h4"
+          >
+            Wordle Solver
+          </Typography>
+
+          <FormControlLabel
+            control={(
+              <Switch
+                checked={colorBlindMode}
+                onChange={() => setColorBlindMode(mode => !mode)}
+              />
+            )}
+            label="Color Blind Mode"
+            labelPlacement="start"
+          />
+        </Box>
 
         <Typography
           component="h2"
@@ -101,6 +120,7 @@ function App() {
 
         {Array(numOfGuesses).fill(Boolean).slice(0, attemptedGuesses.length + 1).map((_attempt, index) => (
           <WordRow
+            colorBlindMode={colorBlindMode}
             key={index}
             onSetGuess={handleSetGuess}
             showEditButton={index === attemptedGuesses.length}

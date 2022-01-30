@@ -70,22 +70,28 @@ const Settings: FC<Props> = ({
 
   const handleClickGameSettings = useCallback(() => {
     setIsGameSettingsDialogOpen(true);
-  }, []);
+    handleClose();
+  }, [handleClose]);
 
   const handleCloseDialog = useCallback(() => {
     setIsGameSettingsDialogOpen(false);
-  }, [])
+  }, []);
+
+  const handleResetGame = useCallback(() => {
+    handleClose();
+    onClickResetGame();
+  }, [handleClose, onClickResetGame]);
 
   const handleSaveGameSettings = useCallback(() => {
     setNumOfGuesses(localNumOfGuesses);
     setWordLength(localWordLength);
     handleCloseDialog();
-    onClickResetGame();
+    handleResetGame();
   }, [
     handleCloseDialog,
+    handleResetGame,
     localNumOfGuesses,
     localWordLength,
-    onClickResetGame,
     setNumOfGuesses,
     setWordLength,
   ]);
@@ -151,7 +157,7 @@ const Settings: FC<Props> = ({
             </Button>
 
             <Button
-              onClick={onClickResetGame}
+              onClick={handleResetGame}
             >
               Reset Game
             </Button>

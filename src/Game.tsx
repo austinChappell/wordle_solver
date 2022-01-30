@@ -73,8 +73,10 @@ const Game: FC<Props> = ({
           const isMatchingLetter = l.result === Result.Correct &&
             word[i] === l.letter;
 
-          const isWrongLetter = l.result === Result.Wrong &&
-            !word.includes(l.letter);
+          const isWrongLetter = (l.result === Result.Wrong &&
+            !word.includes(l.letter)) ||
+            (l.result === Result.Wrong &&
+              guess.some(l2 => l2.letter === l.letter && l2.result !== Result.Wrong));
 
           return isExistingLetter
             || isMatchingLetter

@@ -167,6 +167,7 @@ const WordRow: FC<Props> = ({
               </Button>
 
               <Button
+                autoFocus
                 color="primary"
                 onClick={handleCompleteYellowLetters}
                 variant="contained"
@@ -197,6 +198,7 @@ const WordRow: FC<Props> = ({
               </Button>
 
               <Button
+                autoFocus
                 color="primary"
                 onClick={handleClickDone}
                 variant="contained"

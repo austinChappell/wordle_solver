@@ -111,25 +111,23 @@ function App() {
           />
         ))}
 
-        {attemptedGuesses.length > 0 && (
-          <Box marginTop={8}>
-            <Typography gutterBottom>
-              Possible Words (showing {Math.min(remainingPossibleWords.length, maxPossibilitiesToShow)} of {remainingPossibleWords.length.toLocaleString()})
-            </Typography>
+        <Box marginTop={8}>
+          <Typography gutterBottom>
+            Possible Words (showing {Math.min(remainingPossibleWords.length, maxPossibilitiesToShow)} of {remainingPossibleWords.length.toLocaleString()})
+          </Typography>
 
-            <Paper variant="outlined">
-              <List>
-                {remainingPossibleWords.slice(0, maxPossibilitiesToShow).map(word => (
-                  <ListItem key={word}>
-                    <ListItemText
-                      primary={word}
-                    />
-                  </ListItem>
-                ))}
-              </List>
-            </Paper>
-          </Box>
-        )}
+          <Paper variant="outlined">
+            <List>
+              {remainingPossibleWords.slice(0, maxPossibilitiesToShow).map(word => (
+                <ListItem key={word}>
+                  <ListItemText
+                    primary={word}
+                  />
+                </ListItem>
+              ))}
+            </List>
+          </Paper>
+        </Box>
       </Container>
     </Box>
   );

@@ -1,6 +1,6 @@
 // External Dependencies
 import { ChangeEvent, FC, useCallback, useState } from "react"
-import { Box, Button, Dialog, DialogContent, DialogTitle, Input, Typography } from '@mui/material';
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Input, Typography } from '@mui/material';
 import LetterGrid, { LetterGuess, Result } from "./LetterGrid";
 import styled from "@emotion/styled";
 
@@ -76,13 +76,11 @@ const WordRow: FC<Props> = ({
   const handleClickLetter = useCallback((index: number, result: Result) => () => {
     const currentLetter = letters[index];
 
-    if (currentLetter.result !== Result.Wrong) {
-      return;
-    }
+    const newResult = currentLetter.result === Result.Wrong ? result : Result.Wrong;
 
     setLetters(letters.map((l, i) => ({
       letter: l.letter,
-      result: i === index ? result : l.result,
+      result: i === index ? newResult : l.result,
     })));
   }, [letters]);
 
@@ -102,72 +100,97 @@ const WordRow: FC<Props> = ({
         )}
       </Container>
 
-      <Dialog open={isDialogOpen}>
+      <Dialog
+        fullWidth
+        maxWidth="xs"
+        open={isDialogOpen}
+      >
         <DialogTitle>
           {getTitle(step)}
         </DialogTitle>
 
-        <DialogContent>
-          {step === 'word' && (
-            <Container>
+        {step === 'word' && (
+          <>
+            <DialogContent>
               <Input
                 autoFocus
+                fullWidth
                 onChange={handleChange}
                 value={value}
               />
+            </DialogContent>
 
-              <Box marginLeft={2}>
-                <Button
-                  color="primary"
-                  onClick={handleCompleteWord}
-                  variant="contained"
-                >
-                  Next
-                </Button>
-              </Box>
-            </Container>
-          )}
+            <DialogActions>
+              <Button
+                color="primary"
+                onClick={handleCompleteWord}
+                variant="contained"
+              >
+                Next
+              </Button>
+            </DialogActions>
+          </>
+        )}
 
-          {step === 'yellowLetters' && (
-            <Container>
+        {step === 'yellowLetters' && (
+          <>
+            <DialogContent>
               <LetterGrid
                 letters={letters}
                 onClickLetter={handleClickLetter}
                 onClickResult={Result.Exists}
               />
+            </DialogContent>
 
-              <Box marginLeft={2}>
-                <Button
-                  color="primary"
-                  onClick={handleCompleteYellowLetters}
-                  variant="contained"
-                >
-                  Next
-                </Button>
-              </Box>
-            </Container>
-          )}
+            <DialogActions>
+              <Button
+                color="primary"
+                onClick={() => setStep('word')}
+                variant="outlined"
+              >
+                Back
+              </Button>
 
-          {step === 'greenLetters' && (
-            <Container>
+              <Button
+                color="primary"
+                onClick={handleCompleteYellowLetters}
+                variant="contained"
+              >
+                Next
+              </Button>
+            </DialogActions>
+          </>
+        )}
+
+        {step === 'greenLetters' && (
+          <>
+            <DialogContent>
               <LetterGrid
                 letters={letters}
                 onClickLetter={handleClickLetter}
                 onClickResult={Result.Correct}
               />
+            </DialogContent>
 
-              <Box marginLeft={2}>
-                <Button
-                  color="primary"
-                  onClick={handleClickDone}
-                  variant="contained"
-                >
-                  Done
-                </Button>
-              </Box>
-            </Container>
-          )}
-        </DialogContent>
+            <DialogActions>
+              <Button
+                color="primary"
+                onClick={() => setStep('yellowLetters')}
+                variant="outlined"
+              >
+                Back
+              </Button>
+
+              <Button
+                color="primary"
+                onClick={handleClickDone}
+                variant="contained"
+              >
+                Done
+              </Button>
+            </DialogActions>
+          </>
+        )}
       </Dialog>
     </>
   )

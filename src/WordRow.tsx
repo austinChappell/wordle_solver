@@ -65,7 +65,7 @@ const WordRow: FC<Props> = ({
     if (evt.target.value.trim().length <= wordLength) {
       setValue(evt.target.value.trim().toUpperCase());
     }
-  }, []);
+  }, [wordLength]);
 
   const handleCompleteWord = useCallback(() => {
     if (value.length !== wordLength) {
@@ -78,7 +78,7 @@ const WordRow: FC<Props> = ({
     })));
 
     setStep('yellowLetters');
-  }, [value]);
+  }, [value, wordLength]);
 
   const handleClickCancel = useCallback(() => {
     setIsDialogOpen(false);

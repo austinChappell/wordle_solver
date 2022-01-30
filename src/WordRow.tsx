@@ -110,7 +110,7 @@ const WordRow: FC<Props> = ({
             onClick={handleClickEdit}
             variant="contained"
           >
-            Add Word
+            Add Guess
           </Button>
         )}
       </Container>

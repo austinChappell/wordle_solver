@@ -174,6 +174,8 @@ const Settings: FC<Props> = ({
             paddingY={1}
           >
             <TextField
+              fullWidth
+              inputProps={{ max: 12, min: 2 }}
               label="Letters per word"
               onChange={(evt) => {
                 setLocalWordLength(Number(evt.target.value))
@@ -185,6 +187,8 @@ const Settings: FC<Props> = ({
 
           <Box paddingY={1}>
             <TextField
+              fullWidth
+              inputProps={{ min: 1 }}
               label="Number of guesses"
               onChange={(evt) => {
                 setLocalNumOfGuesses(Number(evt.target.value))

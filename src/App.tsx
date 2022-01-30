@@ -35,47 +35,24 @@ function App() {
     ]);
   }, [attemptedGuesses]);
 
-  const remainingPossibleWords = useMemo(() => {
-    const attemptedWords = attemptedGuesses
-      .map(guess =>
-        guess.map(g => g.letter)
-          .join(''));
+  const remainingPossibleWords = useMemo(() => (words ?? [])
+    .filter(word =>
+      attemptedGuesses.every(guess =>
+        guess.every((l, i) => {
+          const isExistingLetter = l.result === Result.Exists &&
+            word.includes(l.letter) &&
+            word[i] !== l.letter;
 
-    const excludedLetters = attemptedGuesses
-      .flatMap(guess =>
-        guess
-          .filter(g => g.result === Result.Wrong)
-          .map(g => g.letter));
+          const isMatchingLetter = l.result === Result.Correct &&
+            word[i] === l.letter;
 
-    const confirmedLetters = Array(numOfLetters).fill(null);
+          const isWrongLetter = l.result === Result.Wrong &&
+            !word.includes(l.letter);
 
-    attemptedGuesses.forEach(guess => {
-      guess.forEach((l, index) => {
-        if (l.result === Result.Correct) {
-          confirmedLetters[index] = l.letter;
-        }
-      })
-    })
-
-    const unknownConfirmedLetters = attemptedWords
-      .join('')
-      .split('')
-      .filter(letter =>
-        !confirmedLetters.includes(letter) && !excludedLetters.includes(letter));
-
-    const remainingWords = (words ?? [])
-      .filter(w => !attemptedWords.includes(w))
-      .filter(w => !w.split('').some(l => excludedLetters.includes(l)));
-
-    return remainingWords
-      .filter(word =>
-        confirmedLetters
-          .every((letter, index) =>
-            letter === null || word[index] === letter))
-      .filter(word =>
-        unknownConfirmedLetters
-          .every(letter => word.includes(letter)))
-  }, [attemptedGuesses, words]);
+          return isExistingLetter || isMatchingLetter
+            || isWrongLetter;
+        }))
+    ), [attemptedGuesses, words]);
 
   useEffect(() => {
     fetch('./words.txt')

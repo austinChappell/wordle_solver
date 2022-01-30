@@ -34,8 +34,10 @@ const getBackgroundColor = (result: Result, colorBlindMode: boolean) => {
 }
 const Grid = styled.div({
   display: 'flex',
+  gap: 8,
+  marginBottom: 8,
 });
-const size = window.innerWidth < 500 ? 32 : 40;
+const size = '15vw'
 const LetterContainer = styled.button<{
   colorBlindMode: boolean;
   result: Result;
@@ -50,7 +52,8 @@ const LetterContainer = styled.button<{
   display: 'flex',
   justifyContent: 'center',
   height: size,
-  margin: 4,
+  maxHeight: 60,
+  maxWidth: 60,
   outlineColor: 'blue',
   outlineWidth: 4,
   width: size,

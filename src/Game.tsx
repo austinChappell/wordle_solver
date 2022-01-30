@@ -22,6 +22,7 @@ import WordRow from './WordRow';
 import { LetterGuess, Result } from './LetterGrid';
 import { maxPossibilitiesToShow, numOfGuesses, numOfLetters } from './constants';
 import Settings from './Settings';
+import styled from '@emotion/styled';
 
 // Local Typings
 interface Props {
@@ -31,6 +32,11 @@ interface Props {
 
 // Local Variables
 const generateGameId = () => Math.floor(Math.random() * 10_000).toString();
+const CenterContainer = styled.div({
+  alignItems: 'center',
+  display: 'flex',
+  flexDirection: 'column',
+});
 
 // Component Definition
 const Game: FC<Props> = ({
@@ -85,21 +91,14 @@ const Game: FC<Props> = ({
   return (
     <main>
       <Box
-        padding={4}
-        marginY={4}
+        paddingX={4}
+        paddingY={2}
       >
         <Container>
           <Box
             display="flex"
-            justifyContent="space-between"
+            justifyContent="flex-end"
           >
-            <Typography
-              component="h1"
-              variant="h4"
-            >
-              Wordle Solver
-            </Typography>
-
             <Settings
               colorBlindMode={colorBlindMode}
               darkMode={darkMode}
@@ -109,45 +108,59 @@ const Game: FC<Props> = ({
             />
           </Box>
 
-          <Typography
-            color="textPrimary"
-            component="h2"
-            gutterBottom
-          >
-            Help with solving <Link href="https://www.powerlanguage.co.uk/wordle/">wordle</Link> riddles.
-          </Typography>
+          <CenterContainer>
+            <Typography
+              component="h1"
+              variant="h4"
+            >
+              Wordle Solver
+            </Typography>
 
-          <Box
-            key={gameId}
-            marginY={6}
-          >
-            {Array(numOfGuesses).fill(Boolean).slice(0, attemptedGuesses.length + 1).map((_attempt, index) => (
-              <WordRow
-                colorBlindMode={colorBlindMode}
-                key={index}
-                onSetGuess={handleSetGuess}
-                showEditButton={index === attemptedGuesses.length}
-              />
-            ))}
-          </Box>
+            <Typography
+              color="textPrimary"
+              component="h2"
+              gutterBottom
+            >
+              Help with solving <Link href="https://www.powerlanguage.co.uk/wordle/">wordle</Link> riddles.
+            </Typography>
 
-          <Typography
-            gutterBottom
-          >
-            Possible Words (showing {Math.min(remainingPossibleWords.length, maxPossibilitiesToShow)} of {remainingPossibleWords.length.toLocaleString()})
-          </Typography>
-
-          <Paper variant="outlined">
-            <List>
-              {remainingPossibleWords.slice(0, maxPossibilitiesToShow).map(word => (
-                <ListItem key={word}>
-                  <ListItemText
-                    primary={word}
-                  />
-                </ListItem>
+            <Box
+              key={gameId}
+              marginY={6}
+            >
+              {Array(numOfGuesses).fill(Boolean).slice(0, attemptedGuesses.length + 1).map((_attempt, index) => (
+                <WordRow
+                  colorBlindMode={colorBlindMode}
+                  key={index}
+                  onSetGuess={handleSetGuess}
+                  showEditButton={index === attemptedGuesses.length}
+                />
               ))}
-            </List>
-          </Paper>
+            </Box>
+
+            <Typography
+              gutterBottom
+            >
+              Possible Words (showing {Math.min(remainingPossibleWords.length, maxPossibilitiesToShow)} of {remainingPossibleWords.length.toLocaleString()})
+            </Typography>
+
+            <Box
+              maxWidth={200}
+              width="100%"
+            >
+              <Paper variant="outlined">
+                <List dense>
+                  {remainingPossibleWords.slice(0, maxPossibilitiesToShow).map(word => (
+                    <ListItem key={word}>
+                      <ListItemText
+                        primary={word}
+                      />
+                    </ListItem>
+                  ))}
+                </List>
+              </Paper>
+            </Box>
+          </CenterContainer>
         </Container>
       </Box>
     </main>

@@ -34,8 +34,9 @@ const defaultLetterGuess: LetterGuess = {
   result: Result.Wrong,
 };
 const Container = styled.div({
-  alignItems: 'center',
+  alignItems: 'flex-start',
   display: 'flex',
+  flexDirection: 'column',
 });
 const getTitle = (step: Step, colorBlindMode: boolean) => {
   switch (step) {
@@ -116,7 +117,12 @@ const WordRow: FC<Props> = ({
         />
 
         {showEditButton && (
-          <Box marginLeft={2}>
+          <Box
+            display="flex"
+            justifyContent="flex-end"
+            marginTop={1}
+            width="100%"
+          >
             <Button
               color="primary"
               onClick={handleClickEdit}

@@ -7,25 +7,34 @@ import {
 } from 'react';
 import {
   Box,
+  Button,
   FormControlLabel,
   IconButton,
   Menu,
   Switch,
 } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
+import styled from '@emotion/styled';
 
 // Local Typings
 interface Props {
   colorBlindMode: boolean;
   darkMode: boolean;
+  onClickResetGame: () => void;
   setColorBlindMode: (colorBlindMode: boolean) => void;
   setDarkMode: (darkMode: boolean) => void;
 }
+
+// Local Variables
+const StyledFormControlLabel = styled(FormControlLabel)({
+  marginLeft: 0,
+});
 
 // Component Definition
 const Settings: FC<Props> = ({
   colorBlindMode,
   darkMode,
+  onClickResetGame,
   setColorBlindMode,
   setDarkMode,
 }) => {
@@ -53,11 +62,12 @@ const Settings: FC<Props> = ({
         open={open}
       >
         <Box
+          alignItems="flex-start"
           display="flex"
           flexDirection="column"
           padding={2}
         >
-          <FormControlLabel
+          <StyledFormControlLabel
             control={(
               <Switch
                 checked={colorBlindMode}
@@ -68,7 +78,7 @@ const Settings: FC<Props> = ({
             labelPlacement="start"
           />
 
-          <FormControlLabel
+          <StyledFormControlLabel
             control={(
               <Switch
                 checked={darkMode}
@@ -78,6 +88,19 @@ const Settings: FC<Props> = ({
             label="Dark Mode"
             labelPlacement="start"
           />
+
+          <Box
+            display="flex"
+            justifyContent="center"
+            marginTop={2}
+            width="100%"
+          >
+            <Button
+              onClick={onClickResetGame}
+            >
+              Reset Game
+            </Button>
+          </Box>
         </Box>
       </Menu>
     </>

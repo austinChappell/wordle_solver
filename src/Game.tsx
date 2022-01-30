@@ -30,13 +30,22 @@ interface Props {
 }
 
 // Local Variables
+const generateGameId = () => Math.floor(Math.random() * 10_000).toString();
+
+// Component Definition
 const Game: FC<Props> = ({
   darkMode,
   setDarkMode,
 }) => {
+  const [gameId, setGameId] = useState(generateGameId());
   const [colorBlindMode, setColorBlindMode] = useState(false);
   const [words, setWords] = useState<string[] | null>(null);
   const [attemptedGuesses, setAttemptedGuesses] = useState<LetterGuess[][]>([]);
+
+  const handleResetGame = useCallback(() => {
+    setAttemptedGuesses([]);
+    setGameId(generateGameId());
+  }, []);
 
   const handleSetGuess = useCallback((guess: LetterGuess[]) => {
     setAttemptedGuesses([
@@ -94,6 +103,7 @@ const Game: FC<Props> = ({
             <Settings
               colorBlindMode={colorBlindMode}
               darkMode={darkMode}
+              onClickResetGame={handleResetGame}
               setColorBlindMode={setColorBlindMode}
               setDarkMode={setDarkMode}
             />
@@ -107,14 +117,18 @@ const Game: FC<Props> = ({
             Help with solving <Link href="https://www.powerlanguage.co.uk/wordle/">wordle</Link> riddles.
           </Typography>
 
-          {Array(numOfGuesses).fill(Boolean).slice(0, attemptedGuesses.length + 1).map((_attempt, index) => (
-            <WordRow
-              colorBlindMode={colorBlindMode}
-              key={index}
-              onSetGuess={handleSetGuess}
-              showEditButton={index === attemptedGuesses.length}
-            />
-          ))}
+          <Box
+            key={gameId}
+          >
+            {Array(numOfGuesses).fill(Boolean).slice(0, attemptedGuesses.length + 1).map((_attempt, index) => (
+              <WordRow
+                colorBlindMode={colorBlindMode}
+                key={index}
+                onSetGuess={handleSetGuess}
+                showEditButton={index === attemptedGuesses.length}
+              />
+            ))}
+          </Box>
 
           <Box marginTop={8}>
             <Typography

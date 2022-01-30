@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import WordRow from './WordRow';
-import { Box, Container, List, ListItem, ListItemText, Typography } from '@mui/material';
+import { Box, Container, List, ListItem, ListItemText, Paper, Typography } from '@mui/material';
 import { LetterGuess, Result } from './LetterGrid';
 
 function App() {
@@ -81,19 +81,21 @@ function App() {
 
         {attemptedGuesses.length > 0 && (
           <Box marginTop={8}>
-            <Typography>
+            <Typography gutterBottom>
               Possible Words
             </Typography>
 
-            <List>
-              {remainingPossibleWords.slice(0, 20).map(word => (
-                <ListItem key={word}>
-                  <ListItemText
-                    primary={word}
-                  />
-                </ListItem>
-              ))}
-            </List>
+            <Paper variant="outlined">
+              <List>
+                {remainingPossibleWords.slice(0, 20).map(word => (
+                  <ListItem key={word}>
+                    <ListItemText
+                      primary={word}
+                    />
+                  </ListItem>
+                ))}
+              </List>
+            </Paper>
           </Box>
         )}
       </Container>

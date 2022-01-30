@@ -62,11 +62,7 @@ function App() {
 
     const remainingWords = (words ?? [])
       .filter(w => !attemptedWords.includes(w))
-      .filter(w => excludedLetters.every(letter => !w.includes(letter)));
-
-    if (!confirmedLetters.filter(Boolean).length) {
-      return remainingWords;
-    }
+      .filter(w => !w.split('').every(l => excludedLetters.includes(l)));
 
     return remainingWords
       .filter(word =>

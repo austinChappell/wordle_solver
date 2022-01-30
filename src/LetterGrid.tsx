@@ -27,9 +27,9 @@ const getBackgroundColor = (result: Result, colorBlindMode: boolean) => {
     case Result.Correct:
       return colorBlindMode ? '#DB7500' : '#038A0E';
     case Result.Exists:
-      return colorBlindMode ? '#37B3F0' : '#CCA80A';
+      return colorBlindMode ? '#329BDB' : '#CCA80A';
     case Result.Wrong:
-      return '#222222';
+      return '#000000';
   }
 }
 const Grid = styled.div({
@@ -45,6 +45,7 @@ const LetterContainer = styled.button<{
 }) => ({
   alignItems: 'center',
   backgroundColor: getBackgroundColor(result, colorBlindMode),
+  border: '1px solid #DDDDDD',
   color: '#FFFFFF',
   display: 'flex',
   justifyContent: 'center',

@@ -7,7 +7,7 @@ import styled from "@emotion/styled";
 // Local Typings
 type Step = 'word' | 'yellowLetters' | 'greenLetters';
 interface Props {
-  onSetWord: (word: string) => void;
+  onSetGuess: (guess: LetterGuess[]) => void;
   showEditButton: boolean;
 }
 
@@ -22,7 +22,7 @@ const Container = styled.div({
 
 // Component Definition
 const WordRow: FC<Props> = ({
-  onSetWord,
+  onSetGuess,
   showEditButton,
 }) => {
   const [letters, setLetters] = useState<LetterGuess[]>(Array(5).fill(defaultLetterGuess));
@@ -58,9 +58,9 @@ const WordRow: FC<Props> = ({
   }, []);
 
   const handleClickDone = useCallback(() => {
-    onSetWord(value);
+    onSetGuess(letters);
     setIsDialogOpen(false);
-  }, [onSetWord, value]);
+  }, [letters, onSetGuess]);
 
   const handleClickLetter = useCallback((index: number, result: Result) => () => {
     const currentLetter = letters[index];

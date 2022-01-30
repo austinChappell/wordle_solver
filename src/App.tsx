@@ -1,26 +1,41 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import WordRow from './WordRow';
 import { List, ListItem, ListItemText } from '@mui/material';
+import { LetterGuess, Result } from './LetterGrid';
 
 function App() {
   const [words, setWords] = useState<string[] | null>(null);
-  const [attemptedWords, setAttemptedWords] = useState<string[]>([]);
-  const [excludedLetters, setExcludedLetters] = useState<string[]>([]);
-  const [confirmedLetters, setConfirmedLetters] = useState<(string | null)[]>([
-    null,
-    null,
-    null,
-    null,
-    null,
-  ]);
-  const handleSetWord = useCallback((word: string) => {
-    setAttemptedWords([
-      ...attemptedWords,
-      word,
+  const [attemptedGuesses, setAttemptedGuesses] = useState<LetterGuess[][]>([]);
+
+  const handleSetGuess = useCallback((guess: LetterGuess[]) => {
+    setAttemptedGuesses([
+      ...attemptedGuesses,
+      guess,
     ]);
-  }, [attemptedWords]);
+  }, [attemptedGuesses]);
 
   const remainingPossibleWords = useMemo(() => {
+    const attemptedWords = attemptedGuesses
+      .map(guess =>
+        guess.map(g => g.letter)
+          .join(''));
+
+    const excludedLetters = attemptedGuesses
+      .flatMap(guess =>
+        guess
+          .filter(g => g.result === Result.Wrong)
+          .map(g => g.letter));
+
+    const confirmedLetters = Array(5).fill(null);
+
+    attemptedGuesses.forEach(guess => {
+      guess.forEach((l, index) => {
+        if (l.result === Result.Correct) {
+          confirmedLetters[index] = l.letter;
+        }
+      })
+    })
+
     const unknownConfirmedLetters = attemptedWords
       .join('')
       .split('')
@@ -43,7 +58,7 @@ function App() {
       .filter(word =>
         unknownConfirmedLetters
           .every(letter => word.includes(letter)))
-  }, [attemptedWords, confirmedLetters, excludedLetters, words]);
+  }, [attemptedGuesses, words]);
 
   useEffect(() => {
     fetch('./words.txt')
@@ -60,8 +75,8 @@ function App() {
       {Array(6).fill(Boolean).map((_attempt, index) => (
         <WordRow
           key={index}
-          onSetWord={handleSetWord}
-          showEditButton={index === attemptedWords.length}
+          onSetGuess={handleSetGuess}
+          showEditButton={index === attemptedGuesses.length}
         />
       ))}
 

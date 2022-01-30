@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import WordRow from './WordRow';
-import { List, ListItem, ListItemText } from '@mui/material';
+import { Box, Container, List, ListItem, ListItemText, Typography } from '@mui/material';
 import { LetterGuess, Result } from './LetterGrid';
 
 function App() {
@@ -69,25 +69,35 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
-      {Array(6).fill(Boolean).map((_attempt, index) => (
-        <WordRow
-          key={index}
-          onSetGuess={handleSetGuess}
-          showEditButton={index === attemptedGuesses.length}
-        />
-      ))}
-
-      <List>
-        {remainingPossibleWords.slice(0, 20).map(word => (
-          <ListItem key={word}>
-            <ListItemText
-              primary={word}
-            />
-          </ListItem>
+    <Box marginTop={4}>
+      <Container>
+        {Array(6).fill(Boolean).map((_attempt, index) => (
+          <WordRow
+            key={index}
+            onSetGuess={handleSetGuess}
+            showEditButton={index === attemptedGuesses.length}
+          />
         ))}
-      </List>
-    </div>
+
+        {attemptedGuesses.length > 0 && (
+          <Box marginTop={8}>
+            <Typography>
+              Possible Words
+            </Typography>
+
+            <List>
+              {remainingPossibleWords.slice(0, 20).map(word => (
+                <ListItem key={word}>
+                  <ListItemText
+                    primary={word}
+                  />
+                </ListItem>
+              ))}
+            </List>
+          </Box>
+        )}
+      </Container>
+    </Box>
   );
 }
 

@@ -1,6 +1,6 @@
 // External Dependencies
 import { ChangeEvent, FC, useCallback, useState } from "react"
-import { Button, Dialog, DialogContent, Input, Typography } from '@mui/material';
+import { Box, Button, Dialog, DialogContent, DialogTitle, Input, Typography } from '@mui/material';
 import LetterGrid, { LetterGuess, Result } from "./LetterGrid";
 import styled from "@emotion/styled";
 
@@ -17,8 +17,19 @@ const defaultLetterGuess: LetterGuess = {
   result: Result.Wrong,
 };
 const Container = styled.div({
+  alignItems: 'center',
   display: 'flex',
 });
+const getTitle = (step: Step) => {
+  switch (step) {
+    case 'word':
+      return 'Enter Your Guess';
+    case 'yellowLetters':
+      return 'Select the Yellow Letters';
+    case 'greenLetters':
+      return 'Select the Green Letters';
+  }
+}
 
 // Component Definition
 const WordRow: FC<Props> = ({
@@ -92,66 +103,69 @@ const WordRow: FC<Props> = ({
       </Container>
 
       <Dialog open={isDialogOpen}>
+        <DialogTitle>
+          {getTitle(step)}
+        </DialogTitle>
+
         <DialogContent>
           {step === 'word' && (
-            <>
+            <Container>
               <Input
+                autoFocus
                 onChange={handleChange}
                 value={value}
               />
 
-              <Button
-                color="primary"
-                onClick={handleCompleteWord}
-                variant="contained"
-              >
-                Next
-              </Button>
-            </>
+              <Box marginLeft={2}>
+                <Button
+                  color="primary"
+                  onClick={handleCompleteWord}
+                  variant="contained"
+                >
+                  Next
+                </Button>
+              </Box>
+            </Container>
           )}
 
           {step === 'yellowLetters' && (
-            <>
-              <Typography>
-                Select the yellow letters
-              </Typography>
-
+            <Container>
               <LetterGrid
                 letters={letters}
                 onClickLetter={handleClickLetter}
                 onClickResult={Result.Exists}
               />
 
-              <Button
-                color="primary"
-                onClick={handleCompleteYellowLetters}
-                variant="contained"
-              >
-                Next
-              </Button>
-            </>
+              <Box marginLeft={2}>
+                <Button
+                  color="primary"
+                  onClick={handleCompleteYellowLetters}
+                  variant="contained"
+                >
+                  Next
+                </Button>
+              </Box>
+            </Container>
           )}
 
           {step === 'greenLetters' && (
-            <>
-              <Typography>
-                Select the green letters
-              </Typography>
-
+            <Container>
               <LetterGrid
                 letters={letters}
                 onClickLetter={handleClickLetter}
                 onClickResult={Result.Correct}
               />
 
-              <Button
-                color="primary"
-                onClick={handleClickDone}
-                variant="contained"
-              >
-                Done
-              </Button>
-            </>
+              <Box marginLeft={2}>
+                <Button
+                  color="primary"
+                  onClick={handleClickDone}
+                  variant="contained"
+                >
+                  Done
+                </Button>
+              </Box>
+            </Container>
           )}
         </DialogContent>
       </Dialog>

@@ -34,7 +34,7 @@ const getBackgroundColor = (result: Result) => {
 const Grid = styled.div({
   display: 'flex',
 });
-const LetterContainer = styled.div<{ result: Result }>(({ result }) => ({
+const LetterContainer = styled.button<{ result: Result }>(({ result }) => ({
   alignItems: 'center',
   backgroundColor: getBackgroundColor(result),
   color: '#FFFFFF',
@@ -42,6 +42,8 @@ const LetterContainer = styled.div<{ result: Result }>(({ result }) => ({
   justifyContent: 'center',
   height: 40,
   margin: 8,
+  outlineColor: 'blue',
+  outlineWidth: 4,
   width: 40,
 }));
 
@@ -55,9 +57,11 @@ const LetterGrid: FC<Props> = ({
     <Grid>
       {letters.map((l, index) => (
         <LetterContainer
+          disabled={!onClickLetter}
           key={index}
           onClick={onClickLetter?.(index, onClickResult ?? Result.Correct)}
           result={l.result}
+          tabIndex={0}
         >
           <Typography component="span">
             {l.letter}

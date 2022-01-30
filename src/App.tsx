@@ -62,7 +62,7 @@ function App() {
 
     const remainingWords = (words ?? [])
       .filter(w => !attemptedWords.includes(w))
-      .filter(w => !w.split('').every(l => excludedLetters.includes(l)));
+      .filter(w => !w.split('').some(l => excludedLetters.includes(l)));
 
     return remainingWords
       .filter(word =>

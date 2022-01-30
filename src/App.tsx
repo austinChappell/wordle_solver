@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useState } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import WordRow from './WordRow';
+import { List, ListItem, ListItemText } from '@mui/material';
 
 function App() {
   const [words, setWords] = useState<string[] | null>(null);
@@ -13,8 +13,20 @@ function App() {
     null,
     null,
   ]);
+  const handleSetWord = useCallback((word: string) => {
+    setAttemptedWords([
+      ...attemptedWords,
+      word,
+    ]);
+  }, [attemptedWords]);
 
   const remainingPossibleWords = useMemo(() => {
+    const unknownConfirmedLetters = attemptedWords
+      .join('')
+      .split('')
+      .filter(letter =>
+        !confirmedLetters.includes(letter) && !excludedLetters.includes(letter));
+
     const remainingWords = (words ?? [])
       .filter(w => !attemptedWords.includes(w))
       .filter(w => excludedLetters.some(letter => w.includes(letter)));
@@ -28,11 +40,12 @@ function App() {
         confirmedLetters
           .every((letter, index) =>
             letter === null || word[index] === letter))
+      .filter(word =>
+        unknownConfirmedLetters
+          .every(letter => word.includes(letter)))
   }, [attemptedWords, confirmedLetters, excludedLetters, words]);
 
   useEffect(() => {
-    console.log('fetching words....')
-
     fetch('./words.txt')
       .then((r) => r.text())
       .then(text => {
@@ -44,20 +57,23 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {Array(6).fill(Boolean).map((_attempt, index) => (
+        <WordRow
+          key={index}
+          onSetWord={handleSetWord}
+          showEditButton={index === attemptedWords.length}
+        />
+      ))}
+
+      <List>
+        {remainingPossibleWords.slice(0, 20).map(word => (
+          <ListItem key={word}>
+            <ListItemText
+              primary={word}
+            />
+          </ListItem>
+        ))}
+      </List>
     </div>
   );
 }

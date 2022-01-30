@@ -58,8 +58,16 @@ const Settings: FC<Props> = ({
 
       <Menu
         anchorEl={anchorEl}
+        anchorOrigin={{
+          horizontal: 'right',
+          vertical: 'bottom',
+        }}
         onClose={handleClose}
         open={open}
+        transformOrigin={{
+          horizontal: 'right',
+          vertical: 'top',
+        }}
       >
         <Box
           alignItems="flex-start"

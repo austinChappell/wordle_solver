@@ -34,17 +34,18 @@ const getBackgroundColor = (result: Result) => {
 const Grid = styled.div({
   display: 'flex',
 });
+const size = window.innerWidth < 500 ? 32 : 40;
 const LetterContainer = styled.button<{ result: Result }>(({ result }) => ({
   alignItems: 'center',
   backgroundColor: getBackgroundColor(result),
   color: '#FFFFFF',
   display: 'flex',
   justifyContent: 'center',
-  height: 40,
-  margin: 8,
+  height: size,
+  margin: 4,
   outlineColor: 'blue',
   outlineWidth: 4,
-  width: 40,
+  width: size,
 }));
 
 // Component Definition

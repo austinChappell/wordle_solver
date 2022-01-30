@@ -6,6 +6,7 @@ import {
   useState
 } from 'react'
 import {
+  Box,
   Button,
   Dialog,
   DialogActions,
@@ -105,13 +106,16 @@ const WordRow: FC<Props> = ({
         <LetterGrid letters={letters} />
 
         {showEditButton && (
-          <Button
-            color="primary"
-            onClick={handleClickEdit}
-            variant="contained"
-          >
-            Add Guess
-          </Button>
+          <Box marginLeft={2}>
+            <Button
+              color="primary"
+              onClick={handleClickEdit}
+              size={window.innerWidth < 500 ? 'small' : 'medium'}
+              variant="contained"
+            >
+              Add Guess
+            </Button>
+          </Box>
         )}
       </Container>
 

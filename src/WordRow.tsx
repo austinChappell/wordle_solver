@@ -78,6 +78,11 @@ const WordRow: FC<Props> = ({
     setStep('yellowLetters');
   }, [value]);
 
+  const handleClickCancel = useCallback(() => {
+    setIsDialogOpen(false);
+    setValue('');
+  }, []);
+
   const handleCompleteYellowLetters = useCallback(() => {
     setStep('greenLetters');
   }, []);
@@ -145,6 +150,14 @@ const WordRow: FC<Props> = ({
             </DialogContent>
 
             <DialogActions>
+              <Button
+                color="primary"
+                onClick={handleClickCancel}
+                variant="outlined"
+              >
+                Cancel
+              </Button>
+
               <Button
                 color="primary"
                 onClick={handleCompleteWord}

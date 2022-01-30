@@ -22,7 +22,7 @@ const lightTheme = createTheme({
 });
 
 function App() {
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
 
   return (
     <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>

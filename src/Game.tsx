@@ -75,11 +75,12 @@ const Game: FC<Props> = ({
 
           const isResultWrong = l.result === Result.Wrong;
           const wordHasLetter = word.includes(l.letter);
+          const wordHasLetterInExactLocation = word[i] === l.letter;
           const guessHasCorrectLetter = guess
             .some(l2 => l2.letter === l.letter && l2.result !== Result.Wrong);
 
           const isWrongLetter = (isResultWrong && !wordHasLetter) ||
-            (isResultWrong && guessHasCorrectLetter);
+            (isResultWrong && guessHasCorrectLetter && !wordHasLetterInExactLocation);
 
           return isExistingLetter
             || isMatchingLetter

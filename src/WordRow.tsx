@@ -12,7 +12,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  Input
+  TextField
 } from '@mui/material';
 import styled from '@emotion/styled';
 
@@ -146,11 +146,12 @@ const WordRow: FC<Props> = ({
         </DialogTitle>
 
         {step === 'word' && (
-          <>
+          <form onSubmit={handleCompleteWord}>
             <DialogContent>
-              <Input
+              <TextField
                 autoFocus
                 fullWidth
+                label="Your Guess"
                 onChange={handleChange}
                 value={value}
               />
@@ -167,13 +168,13 @@ const WordRow: FC<Props> = ({
 
               <Button
                 color="primary"
-                onClick={handleCompleteWord}
+                type="submit"
                 variant="contained"
               >
                 Next
               </Button>
             </DialogActions>
-          </>
+          </form>
         )}
 
         {step === 'yellowLetters' && (

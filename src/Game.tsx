@@ -9,17 +9,13 @@ import {
 import {
   Box,
   Container,
-  FormControlLabel,
-  IconButton,
   Link,
   List,
   ListItem,
   ListItemText,
   Paper,
-  Switch,
   Typography,
 } from '@mui/material';
-import SettingsIcon from '@mui/icons-material/Settings';
 
 // Local Dependencies
 import WordRow from './WordRow';
@@ -63,7 +59,8 @@ const Game: FC<Props> = ({
           const isWrongLetter = l.result === Result.Wrong &&
             !word.includes(l.letter);
 
-          return isExistingLetter || isMatchingLetter
+          return isExistingLetter
+            || isMatchingLetter
             || isWrongLetter;
         }))
     ), [attemptedGuesses, words]);

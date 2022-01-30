@@ -18,7 +18,6 @@ import styled from '@emotion/styled';
 
 // Local Dependencies
 import LetterGrid, { LetterGuess, Result } from './LetterGrid';
-import { numOfLetters } from './constants';
 
 // Local Typings
 type Step = 'word' | 'yellowLetters' | 'greenLetters';
@@ -26,6 +25,7 @@ interface Props {
   colorBlindMode: boolean;
   onSetGuess: (guess: LetterGuess[]) => void;
   showEditButton: boolean;
+  wordLength: number;
 }
 
 // Local Variables
@@ -54,20 +54,21 @@ const WordRow: FC<Props> = ({
   colorBlindMode,
   onSetGuess,
   showEditButton,
+  wordLength,
 }) => {
-  const [letters, setLetters] = useState<LetterGuess[]>(Array(numOfLetters).fill(defaultLetterGuess));
+  const [letters, setLetters] = useState<LetterGuess[]>(Array(wordLength).fill(defaultLetterGuess));
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [value, setValue] = useState('');
   const [step, setStep] = useState<Step>('word');
 
   const handleChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => {
-    if (evt.target.value.trim().length <= numOfLetters) {
+    if (evt.target.value.trim().length <= wordLength) {
       setValue(evt.target.value.trim().toUpperCase());
     }
   }, []);
 
   const handleCompleteWord = useCallback(() => {
-    if (value.length !== numOfLetters) {
+    if (value.length !== wordLength) {
       return;
     }
 

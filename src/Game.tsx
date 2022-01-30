@@ -20,7 +20,6 @@ import {
 // Local Dependencies
 import WordRow from './WordRow';
 import { LetterGuess, Result } from './LetterGrid';
-import { maxPossibilitiesToShow, numOfGuesses, numOfLetters } from './constants';
 import Settings from './Settings';
 import styled from '@emotion/styled';
 
@@ -31,6 +30,7 @@ interface Props {
 }
 
 // Local Variables
+const maxPossibilitiesToShow = 50;
 const generateGameId = () => Math.floor(Math.random() * 10_000).toString();
 const CenterContainer = styled.div({
   alignItems: 'center',
@@ -43,6 +43,8 @@ const Game: FC<Props> = ({
   darkMode,
   setDarkMode,
 }) => {
+  const [numOfGuesses, setNumOfGuesses] = useState(6);
+  const [wordLength, setWordLength] = useState(5);
   const [gameId, setGameId] = useState(generateGameId());
   const [colorBlindMode, setColorBlindMode] = useState(false);
   const [words, setWords] = useState<string[] | null>(null);
@@ -84,9 +86,9 @@ const Game: FC<Props> = ({
     fetch('./words.txt')
       .then((r) => r.text())
       .then(text => {
-        setWords(text.toUpperCase().split('\n').filter(word => word.length === numOfLetters));
+        setWords(text.toUpperCase().split('\n').filter(word => word.length === wordLength));
       })
-  }, []);
+  }, [wordLength]);
 
   return (
     <main>
@@ -102,9 +104,13 @@ const Game: FC<Props> = ({
             <Settings
               colorBlindMode={colorBlindMode}
               darkMode={darkMode}
+              numOfGuesses={numOfGuesses}
               onClickResetGame={handleResetGame}
               setColorBlindMode={setColorBlindMode}
               setDarkMode={setDarkMode}
+              setNumOfGuesses={setNumOfGuesses}
+              setWordLength={setWordLength}
+              wordLength={wordLength}
             />
           </Box>
 
@@ -134,6 +140,7 @@ const Game: FC<Props> = ({
                   key={index}
                   onSetGuess={handleSetGuess}
                   showEditButton={index === attemptedGuesses.length}
+                  wordLength={wordLength}
                 />
               ))}
             </Box>

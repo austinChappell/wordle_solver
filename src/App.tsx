@@ -99,7 +99,7 @@ function App() {
           Help with solving <Link href="https://www.powerlanguage.co.uk/wordle/">wordle</Link> riddles.
         </Typography>
 
-        {Array(numOfGuesses).fill(Boolean).map((_attempt, index) => (
+        {Array(numOfGuesses).fill(Boolean).slice(0, attemptedGuesses.length + 1).map((_attempt, index) => (
           <WordRow
             key={index}
             onSetGuess={handleSetGuess}

@@ -1,7 +1,25 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+// External Dependencies
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState
+} from 'react';
+import {
+  Box,
+  Container,
+  Link,
+  List,
+  ListItem,
+  ListItemText,
+  Paper,
+  Typography
+} from '@mui/material';
+
+// Local Dependencies
 import WordRow from './WordRow';
-import { Box, Container, List, ListItem, ListItemText, Paper, Typography } from '@mui/material';
 import { LetterGuess, Result } from './LetterGrid';
+import { maxPossibilitiesToShow, numOfGuesses, numOfLetters } from './constants';
 
 function App() {
   const [words, setWords] = useState<string[] | null>(null);
@@ -26,7 +44,7 @@ function App() {
           .filter(g => g.result === Result.Wrong)
           .map(g => g.letter));
 
-    const confirmedLetters = Array(5).fill(null);
+    const confirmedLetters = Array(numOfLetters).fill(null);
 
     attemptedGuesses.forEach(guess => {
       guess.forEach((l, index) => {
@@ -64,14 +82,28 @@ function App() {
     fetch('./words.txt')
       .then((r) => r.text())
       .then(text => {
-        setWords(text.toUpperCase().split('\n').filter(word => word.length === 5));
+        setWords(text.toUpperCase().split('\n').filter(word => word.length === numOfLetters));
       })
   }, []);
 
   return (
-    <Box marginTop={4}>
+    <Box marginY={4}>
       <Container>
-        {Array(6).fill(Boolean).map((_attempt, index) => (
+        <Typography
+          component="h1"
+          variant="h4"
+        >
+          Wordle Solver
+        </Typography>
+
+        <Typography
+          component="h2"
+          gutterBottom
+        >
+          Help with solving <Link href="https://www.powerlanguage.co.uk/wordle/">wordle</Link> riddles.
+        </Typography>
+
+        {Array(numOfGuesses).fill(Boolean).map((_attempt, index) => (
           <WordRow
             key={index}
             onSetGuess={handleSetGuess}
@@ -82,12 +114,12 @@ function App() {
         {attemptedGuesses.length > 0 && (
           <Box marginTop={8}>
             <Typography gutterBottom>
-              Possible Words
+              Possible Words (showing {Math.min(remainingPossibleWords.length, maxPossibilitiesToShow)} of {remainingPossibleWords.length.toLocaleString()})
             </Typography>
 
             <Paper variant="outlined">
               <List>
-                {remainingPossibleWords.slice(0, 20).map(word => (
+                {remainingPossibleWords.slice(0, maxPossibilitiesToShow).map(word => (
                   <ListItem key={word}>
                     <ListItemText
                       primary={word}

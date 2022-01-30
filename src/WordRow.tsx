@@ -1,8 +1,23 @@
 // External Dependencies
-import { ChangeEvent, FC, useCallback, useState } from "react"
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Input, Typography } from '@mui/material';
-import LetterGrid, { LetterGuess, Result } from "./LetterGrid";
-import styled from "@emotion/styled";
+import {
+  ChangeEvent,
+  FC,
+  useCallback,
+  useState
+} from 'react'
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Input
+} from '@mui/material';
+import styled from '@emotion/styled';
+
+// Local Dependencies
+import LetterGrid, { LetterGuess, Result } from './LetterGrid';
+import { numOfLetters } from './constants';
 
 // Local Typings
 type Step = 'word' | 'yellowLetters' | 'greenLetters';
@@ -36,19 +51,19 @@ const WordRow: FC<Props> = ({
   onSetGuess,
   showEditButton,
 }) => {
-  const [letters, setLetters] = useState<LetterGuess[]>(Array(5).fill(defaultLetterGuess));
+  const [letters, setLetters] = useState<LetterGuess[]>(Array(numOfLetters).fill(defaultLetterGuess));
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [value, setValue] = useState('');
   const [step, setStep] = useState<Step>('word');
 
   const handleChange = useCallback((evt: ChangeEvent<HTMLInputElement>) => {
-    if (evt.target.value.trim().length <= 5) {
+    if (evt.target.value.trim().length <= numOfLetters) {
       setValue(evt.target.value.trim().toUpperCase());
     }
   }, []);
 
   const handleCompleteWord = useCallback(() => {
-    if (value.length !== 5) {
+    if (value.length !== numOfLetters) {
       return;
     }
 

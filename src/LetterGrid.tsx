@@ -1,8 +1,9 @@
 // External Dependencies
-import { FC } from "react"
-import styled from "@emotion/styled";
-import { Typography } from "@mui/material";
+import { FC } from 'react'
+import styled from '@emotion/styled';
+import { Typography } from '@mui/material';
 
+// Local Typings
 export enum Result {
   Wrong,
   Exists,
@@ -13,7 +14,6 @@ export interface LetterGuess {
   result: Result;
 }
 
-// Local Typings
 interface Props {
   letters: LetterGuess[];
   onClickLetter?: (index: number, result: Result) => () => void;

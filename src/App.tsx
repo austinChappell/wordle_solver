@@ -44,7 +44,7 @@ function App() {
 
     const remainingWords = (words ?? [])
       .filter(w => !attemptedWords.includes(w))
-      .filter(w => excludedLetters.some(letter => w.includes(letter)));
+      .filter(w => excludedLetters.every(letter => !w.includes(letter)));
 
     if (!confirmedLetters.filter(Boolean).length) {
       return remainingWords;
@@ -64,11 +64,9 @@ function App() {
     fetch('./words.txt')
       .then((r) => r.text())
       .then(text => {
-        setWords(text.split('\n').filter(word => word.length === 5));
+        setWords(text.toUpperCase().split('\n').filter(word => word.length === 5));
       })
   }, []);
-
-  console.log('words : ', words);
 
   return (
     <div className="App">
